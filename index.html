@@ -1,0 +1,70 @@
+<html>
+	<head>
+		<link rel="manifest" href="manifest.json">
+		<title>kitsunebi</title>
+		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦊</text></svg>">
+		<script>
+			document.addEventListener('DOMContentLoaded', function() {
+				const editor = document.querySelector('.editor');
+				let saveTimer = null;
+
+				// Load saved content
+				const savedContent = localStorage.getItem('kitsunebi');
+				if (savedContent) {
+					editor.innerHTML = savedContent;
+				}
+
+				// Save content after 1 second of inactivity
+				function scheduleSave() {
+					if (saveTimer) {
+						clearTimeout(saveTimer);
+					}
+					saveTimer = setTimeout(function() {
+						localStorage.setItem('kitsunebi', editor.innerHTML);
+						saveTimer = null;
+					}, 1000);
+				}
+
+				editor.addEventListener('input', scheduleSave);
+			});
+		</script>
+		<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+		<style>
+			* {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+			}
+
+			html, body {
+				width: 100%;
+				height: 100%;
+				overflow-x: hidden;
+			}
+			
+			body {
+				background-color: black;
+				color: #ffb000;
+				padding: 20px;
+			}
+			
+			.editor {
+				width: 100%;
+				min-height: calc(100vh - 40px);
+				padding: 15px;
+				background: black;
+				font-family: 'Roboto Mono', monospace;
+				font-size: 1.25rem;
+				line-height: 2;
+				word-wrap: break-word;
+				text-shadow: 0 0 3px #ff8d00, 0 0 7px #ff8d00;
+				outline: none;
+				overflow-wrap: break-word;
+				overflow-x: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="editor" contenteditable spellcheck="false"></div>
+	</body>
+</html>
